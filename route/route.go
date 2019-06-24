@@ -1,7 +1,7 @@
 package route
 
 import (
-	"webapi/handler"
+	"project_api/handler"
 
 	"github.com/julienschmidt/httprouter"
 )

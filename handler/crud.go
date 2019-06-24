@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"webapi/util"
+	"project_api/util"
 
 	"github.com/bitly/go-simplejson"
 	"github.com/julienschmidt/httprouter"
@@ -39,7 +39,7 @@ func InsertNode(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	userService := &UserService{}
-	if !Regexphone(user.Phone) {
+	if !util.Regexphone(user.Phone) {
 		util.ResponseJSON(w, -2, util.ErrorCode(-2), simplejson.New())
 		return
 	}
@@ -68,7 +68,7 @@ func DeleteNode(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	user := UserService{}
-	fmt.Println("==", users.Account, users.Password)
+	//fmt.Println("==", users.Account, users.Password)
 	isExistData := user.IsExistData(users)
 	fmt.Println(isExistData)
 	if !isExistData {
@@ -103,7 +103,7 @@ func UpdateNode(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		util.ResponseJSON(w, 1002, util.ErrorCode(1002), simplejson.New())
 		return
 	}
-	if !Regexphone(user.Phone) {
+	if !util.Regexphone(user.Phone) {
 		util.ResponseJSON(w, -4, util.ErrorCode(-4), simplejson.New())
 		return
 	}
@@ -135,21 +135,21 @@ func SeleNode(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 //IsExistData 判断数据账号是否存在
 func (p *UserService) IsExistData(node Users) bool {
 	var count int
-	sql := "select count(*) from user where account=? and password=? "
+	sql := "select count(*) from user where account=? and password=? " //insert into set 比 insert into values 清晰明了，容易查错 ，但是不能批量增加数据
 	err := util.Mysqldb.QueryRow(sql, node.Account, node.Password).Scan(&count)
-	fmt.Print(err)
+	//fmt.Print(err)
 	if err != nil {
 		util.Logger.Error(err)
 		return false
 	}
-	fmt.Println("count:", count)
+	//fmt.Println("count:", count)
 	if count >= 1 {
 		return true
 	}
 	return false
 }
 
-// UserService 增加 存储
+// UserService 增加存储的用户结构体
 type UserService struct {
 }
 
@@ -177,6 +177,7 @@ func (p *UserService) Seledata() ([]Users, error) {
 	if err != nil {
 		util.Logger.Error(err)
 	}
+	//获取的集合进行遍历存到数组当中
 	var users []Users
 	for rows.Next() {
 		var user Users

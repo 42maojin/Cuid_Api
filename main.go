@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"webapi/route"
-	"webapi/util"
-	"webapi/version"
+	"project_api/route"
+	"project_api/util"
+	"project_api/version"
 
 	"github.com/facebookgo/grace/gracehttp"
 
