@@ -125,11 +125,7 @@ func SeleNode(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	userservice := &UserService{}
 	res, err := userservice.Seledata()
-	if err != nil {
-		util.ResponseJSON(w, -1, util.ErrorCode(-1), simplejson.New())
-		return
-	}
-	util.ResponseJSON(w, 0, util.ErrorCode(0), res)
+	
 }
 
 //IsExistData 判断数据账号是否存在
